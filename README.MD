@@ -1,3 +1,24 @@
+# Forked to work with Orangepi PC 2
+
+sippet of install instructions: http://www.industrie-optimierer.ch/tmp/PiKVM/PiKVM_OrangePizero2/Readme.txt
+
+## First Boot:
+
+Don't use Custom Patches, say N !!!
+```shell
+apt update && sync && apt -y upgrade
+git clone https://github.com/xe5700/kvmd-armbian.git
+cd kvmd-armbian
+chmod +x install.sh
+./install.sh
+```
+
+## Second Boot:
+```shell
+cd kvmd-armbian
+./install.sh
+```
+
 # KVMD-ARMBIAN
 This project support non Raspberry Pi device to running pikvm on armbian
 # Install
