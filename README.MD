@@ -2,6 +2,8 @@
 
 sippet of install instructions: http://www.industrie-optimierer.ch/tmp/PiKVM/PiKVM_OrangePizero2/Readme.txt
 
+First download armbian jammy image: https://redirect.armbian.com/orangepipc2/Jammy_current
+
 ## First Boot:
 
 Don't use Custom Patches, say N !!!
