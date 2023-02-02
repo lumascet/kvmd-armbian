@@ -21,6 +21,23 @@ cd kvmd-armbian
 ./install.sh
 ```
 
+## Mass Storage Drive 
+
+First create a second ext4 partition on your device.
+Then in this case, /dev/mmcblk0p2 was added in /etc/fstab this line:
+
+```
+/dev/mmcblk0p2  /var/lib/kvmd/msd   ext4  nodev,nosuid,noexec,ro,errors=remount-ro,data=journal,X-kvmd.otgmsd-root=/var/lib/kvmd/msd,X-kvmd.otgmsd-user=kvmd  0  0
+```
+and in /etc/kvmd/override.yaml (deacitvate #msd type):
+```
+    hid:
+        mouse_alt:
+            device: /dev/kvmd-hid-mouse-alt  # allow absolute/relative mouse mode
+#    msd:
+#        type: disabled
+```
+
 # KVMD-ARMBIAN
 This project support non Raspberry Pi device to running pikvm on armbian
 # Install
