@@ -134,12 +134,13 @@ class Plugin(BaseUserGpioDriver):  # pylint: disable=too-many-instance-attribute
                     data = b""
                     self.__channel_queue.put_nowait(-1)
 
+                    # PROGRAM LOCKS HERE WHEN H4401 IS USED
                     # Wait for first port heartbeat to set correct channel (~2 sec max)
-                    while True:
-                        (channel, data) = self.__recv_channel(tty, data)
-                        if channel is not None:
-                            self.__channel_queue.put_nowait(channel)
-                            break
+                    # while True:
+                    #     (channel, data) = self.__recv_channel(tty, data)
+                    #     if channel is not None:
+                    #         self.__channel_queue.put_nowait(channel)
+                    #         break
 
                     while not self.__stop_event.is_set():
                         (channel, data) = self.__recv_channel(tty, data)
@@ -167,9 +168,9 @@ class Plugin(BaseUserGpioDriver):  # pylint: disable=too-many-instance-attribute
         channel: (int | None) = None
         if tty.in_waiting:
             data += tty.read_all()
-            logger.info(f"Got: {data}", self)
-            logger.info(f"Found: {found}", self)
             found = re.findall(b"G0[1-4]gA\x00", data)
+            logger.info(f"Got: {data}")
+            logger.info(f"Found: {found}")
             if found:
                 try:
                     channel = int(found[-1][2:4]) - 1
@@ -184,7 +185,7 @@ class Plugin(BaseUserGpioDriver):  # pylint: disable=too-many-instance-attribute
         #b'G01gA\x00G02gA\x00G03gA\x00G04gA\x00'
         cmd = "G{port:02d}gA\x00".format(port=(channel + 1)).encode()
         tty.write(cmd)
-        logger.info(f"Sent: {cmd}", self)
+        logger.info(f"Sent: {cmd}")
         tty.flush()
 
     def __str__(self) -> str:
