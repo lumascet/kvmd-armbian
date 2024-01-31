@@ -163,7 +163,7 @@ class Plugin(BaseUserGpioDriver):  # pylint: disable=too-many-instance-attribute
         return serial.Serial(self.__device_path, self.__speed, timeout=self.__read_timeout)
 
     def __recv_channel(self, tty: serial.Serial, data: bytes) -> tuple[(int | None), bytes]:
-        logger = aioproc.settle(str(self), f"gpio-h4401-{self._instance_name}")
+        logger = get_logger()
         channel: (int | None) = None
         if tty.in_waiting:
             data += tty.read_all()
@@ -179,7 +179,7 @@ class Plugin(BaseUserGpioDriver):  # pylint: disable=too-many-instance-attribute
         return (channel, data)
 
     def __send_channel(self, tty: serial.Serial, channel: int) -> None:
-        logger = aioproc.settle(str(self), f"gpio-h4401-{self._instance_name}")
+        logger = get_logger()
         assert 0 <= channel <= 3
         #b'G01gA\x00G02gA\x00G03gA\x00G04gA\x00'
         cmd = "G{port:02d}gA\x00".format(port=(channel + 1)).encode()
