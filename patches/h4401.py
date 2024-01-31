@@ -151,6 +151,8 @@ class Plugin(BaseUserGpioDriver):  # pylint: disable=too-many-instance-attribute
                         if got:
                             assert channel is not None
                             self.__send_channel(tty, channel)
+                            if channel is not None:
+                                self.__channel_queue.put_nowait(channel)
 
             except Exception as err:
                 self.__channel_queue.put_nowait(None)
