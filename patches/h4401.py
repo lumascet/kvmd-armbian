@@ -173,16 +173,18 @@ class Plugin(BaseUserGpioDriver):  # pylint: disable=too-many-instance-attribute
             logger.info(f"Found: {found}")
             if found:
                 try:
-                    channel = int(found[-1][2:4]) - 1
+                    channel = int(found[-1][1:3]) - 1
                 except Exception:
                     channel = None
+            logger.info(f"Channel: {channel}")
             data = data[-12:]
         return (channel, data)
 
     def __send_channel(self, tty: serial.Serial, channel: int) -> None:
         logger = get_logger()
         assert 0 <= channel <= 3
-        #b'G01gA\x00G02gA\x00G03gA\x00G04gA\x00'
+        #Recieved: b'G01gA\x00G02gA\x00G03gA\x00G04gA\x00'
+        #Sent:     b'G01gA\x00G02gA\x00G03gA\x00G04gA\x00'
         cmd = "G{port:02d}gA\x00".format(port=(channel + 1)).encode()
         tty.write(cmd)
         logger.info(f"Sent: {cmd}")
